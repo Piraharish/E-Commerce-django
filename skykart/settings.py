@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'skykart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'skykart',
+        'NAME': 'Your Database Name',
         'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD':'12345',
+        'USER': 'Your User',
+        'PASSWORD':'Your Password',
         'PORT':'3306'
 
     }
@@ -135,10 +135,10 @@ STATICFILES_DIRS=[
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-RAZORPAY_KEY_ID = 'rzp_test_hVrvWFeoELiLve'
-RAZORPAY_KEY_SECRET = 'Fg4ZyBvd3N6KTqzC4fz4XaKq'
+RAZORPAY_KEY_ID = 'Your Key ID'
+RAZORPAY_KEY_SECRET = 'Your Key Secret'
 
 SESSION_COOKIE_AGE = 1800
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
-ALLOWED_HOSTS = ['192.168.29.179','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['Your device ip','localhost','127.0.0.1']
 
