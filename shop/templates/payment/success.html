@@ -1,0 +1,25 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Payment Success | SkyKart
+{% endblock title %}
+{% block content %}
+<div class="container my-5 py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card bg-dark">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0 text-font text-uppercase text-center">Payment Successful</h5>
+        </div>
+        <div class="card-body text-light text-center">
+        </p></p>
+          <p>Your payment has been successfully processed. Thank you for your order!</p>
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+          <a href="{% url 'orders' %}" class="btn btn-warning text-font mt-3 btn-gap">Your Orders</a>
+          <a href="{% url 'collections' %}" class="btn btn-success text-font text-dark mt-3">Buy More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

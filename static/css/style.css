@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap');
+
+html {
+  font-size: 14px;
+}
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+a {
+  text-decoration: none;
+}
+
+/*.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 12fr)); /* Adjust the column width as needed */
+  /*gap: 20px;} /*Add spacing between grid items */
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Add more custom styles for the cards as needed */
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 350px; /* Adjust the height as needed */
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.card-img {
+  object-fit: cover;
+  height: 200px; /* Adjust the height as needed */
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.card-img-product {
+  object-fit: cover;
+  height: 300px; /* Adjust the height as needed */
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.carousel-item img {
+  object-fit: cover;
+  object-position: top;
+  width: 100vh;
+  height: 90vh;
+  overflow: hidden;
+}
+
+.old_price {
+  font-weight: bold;
+  /*background-color: red;*/
+  color: red;
+  padding: 2px;
+  border-radius: 9px;
+  margin-bottom: 2px;
+}
+
+.new_price {
+  font-weight: bold;
+  background-color: green;
+  color: white;
+  padding: 2px;
+  border-radius: 9px;
+  margin-bottom: 2px;
+}
+
+.pic-box {
+  position: relative;
+}
+
+.hot {
+  background-color: orangered;
+  color: white;
+  width: 50px;
+  text-align: center;
+  font-weight: bold;
+  display: inline;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  right: 20px;
+  z-index: 10;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  margin: 0 3px;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.editbtn {
+  margin: 0 3px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.cartbtn {
+  margin: 0 3px;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-width: 0;
+  border-style: none;
+}
+
+.placeorderbtn {
+  margin: 0 3px;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+/* Cart Page Background */
+.cart-page {
+  background-image: url('/static/images/Cart.png');
+  background-size: cover; /* Adjust as needed */
+  background-position: center; /* Adjust as needed */
+}
+
+/* Favorites Page Background */
+.favorites-page {
+  background-image: url('/static/images/login.jpg');
+  background-size: cover; /* Adjust as needed */
+  background-position: center; /* Adjust as needed */
+}
+
+/*icons*/
+.icon {
+  background-image: url('/static/SKYKART.ico');
+  /* background-size: cover; Adjust as needed */
+  /*background-position: center;  Adjust as needed */
+}
+
+.total-amount {
+  color: red; /* Change this to your desired color */
+  /* You can add more styling here, such as font size, weight, etc. */
+}
+
+.dropdown-menu {
+  width: 250px; /* Adjust the width as needed */
+  padding:10px;
+}
+
+.dropdown-item {
+  font-size: 16px; /* Adjust the font size as needed */
+  padding: 10px 15px; /* Adjust the padding as needed */
+}
+
+.text-font {
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+  font-weight: 700;
+  letter-spacing: .156rem;
+  font-size: 1.125rem;
+  }
+.text-heading {
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+  font-weight: 700;
+  letter-spacing: .156rem;
+  font-size: 2.125rem;
+}
+.text-price {
+  padding: 0 .625rem;
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+  font-style: normal;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: .813rem;
+  letter-spacing: 1.6px;
+  }
+.text-descriptions{
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+  font-style: normal;
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.125rem;
+  margin: .313rem 0 .938rem;
+  padding: 0 .625rem;
+}
+.button-color{
+  color: #4e4e4e ;
+  border-color: #4e4e4e ;
+}
+.button-order{
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+  font-style: normal;
+  font-size: .75rem;
+  font-weight: 700;
+  background-color: hsl(90, 40%, 50%);
+  color: white;
+}
+/*design for empty cart and favourites page*/
+.empty-page {
+  margin-top: 100px;
+  padding: 20px;
+  text-align: center;
+  font-size: 30px;
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+}
+  
+.empty-page a.btn {
+  display: inline-block;
+}
+
+.address-page {
+  margin-top: 100px;
+  padding: 20px;
+  text-align: center;
+  font-size: 30px;
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+}
+
+.addressbtn {
+  margin: 0 3px;
+  border: 2px solid #ccc;
+  border-radius: 40px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.address-font {
+  font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+  font-weight: 700;
+  letter-spacing: .156rem;
+  font-size: 2.125rem;
+  }
+
+  .form-control {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.hr {
+  border: none; /* Remove default border */
+  height: 50px; /* Set desired height (thickness) */
+  background-color: black; /* Set desired color */
+  margin: 20px 0; /* Adjust spacing around the <hr> */
+  font-weight: 7000;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.btn-gap {
+  margin-right: 30px; /* Adjust the value as needed */
+}
+
+
+
+

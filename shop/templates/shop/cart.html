@@ -1,0 +1,187 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Cart | SkyKart
+{% endblock title %}
+{% block content %}
+  <section class="bg-dark py-4 my-5" style="min-height:600px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h4 class="mb-3">Cart Items</h4>
+          <hr style="border-color:#b8bfc2;">
+        </div>
+        {% if cart %}
+          <div class="table-responsive">
+          <table class="table text-center table-borderless">
+            <tr class="text-warning">
+              <th></th>
+              <th>Product Name</th>
+              <th>Original Price</th>
+              <th>Selling Price</th>
+              <th>Quantity</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+            {% for item in cart %}
+            {% csrf_token %}
+              <tr class="text-center text-warning" data-item-id="{{ item.id }}">
+                <td>
+                  <a href="{% url 'product_detail' item.product.category.name item.product.name %}">
+                    <img src="{{ item.product.product_image.url }}" height="75px" width="150px" alt="{{ item.product.name }}">
+                  </a>
+                </td>
+                <td class="text-white">{{ item.product.name }}</td>
+                <td class="original-price text-white">{{ item.product.original_price | stringformat:'d' }}</td>
+                <td class="selling-price text-white">{{ item.product.selling_price | stringformat:'d' }}</td>
+                <td>
+                  <div class="quantity d-flex align-items-center justify-content-between">
+                    <button class=" text-danger btn btn-sm btn-outline-danger minus-btn" data-item-id="{{ item.id }}">-</button>
+                    <span class="qty-value">{{ item.product_qty }}</span>
+                    <button class="text-success btn btn-sm btn-outline-success plus-btn" data-item-id="{{ item.id }}">+</button>
+                  </div>
+                </td>
+                <td class="amt text-center text-white">{{ item.total_cost | stringformat:'d' }}</td>
+                <td class="text-center"><a href="{% url 'remove_cart' item.id %}"  onclick="return confirm('Are you sure? to Remove')"  class="cartbtn btn-danger btn-sm"><i class="fa fa-trash"></i>Remove</a></td>
+              </tr>
+            {% endfor %}
+            <tr class="text-warning">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><b>Shipping Charges</b></td>
+              <td class="text-info"><b id="shippingCharges">0</b></td>
+              <td></td>
+            </tr>
+              <tr class="text-warning">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>Total Amount</b></td>
+                <td class="text-success"><b id="net">0</b></td>
+                <td>
+                  <button class="btn btn-primary btn-sm" id="checkoutBtn"><i class="fa fa-check-circle"></i> Check Out</button>
+                </td>
+              </tr>
+        </table>
+      {% else %}
+        <!-- Display a message when the cart is empty -->
+        <div class="empty-page">
+          <p class="text-warning"><b>Your Cart is Empty !</b></p>
+          <a href="{% url 'collections' %}" class="btn btn-primary">Add Products</a>
+        </div>
+      {% endif %}
+      </div>
+    </div>
+    </div>
+  </section>
+  <script>   
+    document.addEventListener('DOMContentLoaded', function() {
+    function updateAmountForRow(row) {
+      const qtyValue = row.querySelector('.qty-value');
+      const sellingPriceElement = row.querySelector('.selling-price');
+  
+      // Check if the elements are found before proceeding
+      if (qtyValue && sellingPriceElement) {
+        const sellingPrice = parseFloat(sellingPriceElement.textContent);
+        const quantity = parseInt(qtyValue.textContent, 10);
+        const amountCell = row.querySelector('.amt');
+        const amount = sellingPrice * quantity;
+        amountCell.textContent = amount.toFixed(0);
+      }
+    }
+  
+    function updateTotalAmount() {
+      const amountCells = document.querySelectorAll('.amt'); // Get all amount cells
+      let total = 0;
+      amountCells.forEach(cell => {
+        total += parseFloat(cell.textContent);
+      });
+      // Add shipping charges if total amount is less than 500
+      let shippingCharges = 0;    
+      if (total < 500) {
+        shippingCharges = calculateShippingCharges(total);
+        total += shippingCharges;
+      }
+      document.getElementById("net").innerHTML = "Rs:"+ total.toFixed(1) +"/-";
+      document.getElementById("shippingCharges").innerHTML = "Rs:" + shippingCharges.toFixed(1) + "/-";
+    }
+    function calculateShippingCharges(totalAmount) {
+    // Implement your shipping charges logic here
+    let shippingCharges = 0;
+
+    // If the total amount is less than 500, apply shipping charges
+    if (totalAmount < 500) {
+      // Calculate shipping charges based on the total amount
+      shippingCharges = 50;
+    }
+
+    // Return the calculated shipping charges
+    return shippingCharges;
+    }
+
+    // Function to send AJAX request to update quantity
+    function updateCartItemQuantity(itemId, newQuantity) {
+      fetch(`/update_cart_quantity/${itemId}/${newQuantity}/`)
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response if needed
+          console.log(data.message); // For example, log the success message
+        })
+        .catch(error => {
+          console.error('Error updating cart item quantity:', error);
+        });
+    }
+      
+    const minusButtons = document.querySelectorAll('.minus-btn');
+    const plusButtons = document.querySelectorAll('.plus-btn');
+  
+    minusButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const itemId = btn.getAttribute('data-item-id');
+        const row = document.querySelector(`[data-item-id="${itemId}"]`);
+        const qtyValue = row.querySelector('.qty-value');
+        let quantity = parseInt(qtyValue.textContent, 10);
+        if (quantity > 1) {
+          quantity--;
+          qtyValue.textContent = quantity;
+          updateAmountForRow(row);
+          updateTotalAmount();
+          updateCartItemQuantity(itemId, quantity);
+        }
+      });
+    });
+  
+    plusButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const itemId = btn.getAttribute('data-item-id');
+        const row = document.querySelector(`[data-item-id="${itemId}"]`);
+        const qtyValue = row.querySelector('.qty-value');
+        let quantity = parseInt(qtyValue.textContent, 10);
+        if (quantity < 15) {
+          quantity++;
+          qtyValue.textContent = quantity;
+          updateAmountForRow(row);
+          updateTotalAmount();
+          updateCartItemQuantity(itemId, quantity);
+        }
+      });
+    });
+  
+    const rows = document.querySelectorAll('table tr');
+    rows.forEach(row => {
+      updateAmountForRow(row);
+    });
+  
+    updateTotalAmount(); // Call the function on page load to calculate the initial total amount.
+
+    const checkoutButton = document.getElementById('checkoutBtn');
+    checkoutButton.addEventListener('click', function() {
+      // Redirect the user to the desired URL
+      window.location.href = "{% url 'checkout' %}";
+    });
+  });
+  </script>
+  
+{% endblock content %}

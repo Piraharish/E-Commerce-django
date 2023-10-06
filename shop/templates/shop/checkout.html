@@ -1,0 +1,173 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Checkout | SkyKart
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5 py-5">
+  <!-- Section: Design Block -->
+  <section>
+    <div class="row">
+      <!-- Cart Items -->
+      <div class="col-md-4 mb-4 position-static">
+        <div class="bg-secondary card mb-4">
+          <div class="bg-dark card-header py-3 d-flex justify-content-between">
+            <h5 class="mb-0 text-font text-warning text-uppercase">Cart Items</h5>
+            <a href="{% url 'cart' %}">
+              <button class="btn btn-secondary text-dark"><i class="fa fa-arrow-left me-2"></i>Back</button>
+            </a>
+          </div>
+          <div class="card-body">
+            {% for item in cart_items %}
+            <div class="card mb-2 bg-secondary">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <img src="{{ item.product.product_image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                  </div>
+                  <div class="col-md-8">
+                    <h5 class="text-font text-warning">{{ item.product.name }}</h5>
+                    <p>Quantity: {{ item.product_qty }}</p>
+                    <p class="fw-bold bg-danger">Original Price: <strike>₹{{ item.product.original_price | stringformat:'d' }}</strike>/-</p>
+                    <p class="fw-bold bg-success text-white">Selling Price: ₹{{ item.product.selling_price | stringformat:'d' }}/-</p>
+                    <p class="fw-bold text-font">Total: ₹{{ item.total | floatformat:2 }}/-</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {% endfor %}
+            <div class="bg-dark card-footer mt-4">
+              <ul class="list-group list-group-flush">
+                {% if total < 500 %}
+                  <li class="bg-dark list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 fw-bold text-warning">
+                    SHIPPING CHARGE<small class="text-muted">(on orders below 500)</small>
+                    <span>₹ 50/-</span>
+                  </li>
+                {% endif %}
+                <li class="bg-dark text-warning list-group-item d-flex justify-content-between align-items-center px-0 fw-bold">
+                  TOTAL TO PAY<small class="text-muted">(including GST)</small>
+                  <span>₹ {{ cart_total | stringformat:'d' }}/-</span>
+                </li>
+              </ul>
+            </div>            
+              
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkout Form -->
+      <div class="col-md-8 mb-4">
+        <div class="card mb-4 bg-secondary">
+            <div class="card-header py-3 bg-dark">
+                <h5 class="mb-0 text-font text-warning text-uppercase">Delivery address</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" id="AddressForm" .onclick="return validateForm();">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for address in delivery_addresses %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header bg-dark text-font text-warning">
+                                    Address {{ forloop.counter }}
+                                </div>
+                                <div class="card-body bg-secondary">
+                                    <h5 class="card-title text-font text-center text-uppercase">{{ address.first_name }} {{ address.last_name }}</h5>
+                                    <p class="card-text"><strong><i class="fa fa-phone"></i> Phone:</strong> {{ address.phone }}</p>
+                                    <!--<p class="card-text"><strong><i class="fa fa-envelope"></i> Email:</strong> {{ address.email }}</p>-->
+                                    <p class="card-text"><strong><i class="fa fa-map-marker"></i> Address:</strong> {{ address.address }}</p>
+                                    <p class="card-text"><strong><i class="fa fa-location-arrow"></i> District:</strong> {{ address.district }}</p>
+                                    <p class="card-text"><strong><i class="fa fa-flag"></i> State:</strong> {{ address.state }}</p>
+                                    <p class="card-text"><strong><i class="fa fa-map-pin"></i> Zipcode:</strong> {{ address.zip }}</p>
+                                    <p class="card-text"><strong><i class="fa fa-building"></i> Address Type:</strong> {{ address.get_address_type_display }}</p>
+                                    <!-- Add more fields here -->
+                                </div>
+                                <div class="card-footer bg-dark">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="selected_address" id="address{{ forloop.counter }}" value="{{ address.id }}">
+                                        <label class="form-check-label text-font text-warning" for="address{{ forloop.counter }}">Select Address</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Place Order Button -->
+                    <div class="card-footer bg-dark d-flex justify-content-between align-items-center">
+                      <div class="text-center">
+                        <a href="{% url 'save_address' %}" class="placeorderbtn btn-secondary text-font col-md-10"><i class="fa fa-plus"></i>Add New Address</a>
+                      </div>
+                      <!--<input type="hidden" name="cart_total" value={{ cart_total }}>-->
+                      <div class="text-center">
+                          <!-- <button type="submit" class="placeorderbtn bg-secondary text-warning text-font col-md-10">Place Order</button> -->
+                          <button id="rzp-button1" type="button" class="placeorderbtn bg-secondary text-warning text-font col-md-10">Place Order</button>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="order_id" value={{ order_id }}>
+    <input type="hidden" name="user_id" value={{ user_id }}>
+    </div>
+  </section>
+</div>
+{% endblock content %}
+
+{% block payment-gateway %}
+<input type="hidden" name="order_id" value={{ order_id }}>
+<input type="hidden" name="user_id" value={{ user_id }}>
+<script>
+  var order_id = document.querySelector('input[name="order_id"]').value;
+  var user_id = document.querySelector('input[name="user_id"]').value;
+  var options = {
+    "key": "rzp_test_hVrvWFeoELiLve", // Enter the Key ID generated from the Dashboard
+    "amount": "{{razoramount}}", // Amount is in currency subunits. Default currency is INR. For example, for ₹100, amount should be 10000
+    "currency": "INR",
+    "name": "SkyKart Corp", // Your business name
+    "description": "Thanks for Shopping with us !",
+    "image": "https://cdn.pixabay.com/photo/2018/08/04/15/37/shopping-3589969_1280.png", // Replace with the actual path to your favicon
+    "order_id": "{{ order_id }}", // Use the order_id obtained from your payment processing
+    "handler": function (response) {
+      // Handle successful payment response here
+      //console.log("Razorpay Response:", response);
+      //var order_id = response.id;  // Use the Razorpay response ID as the order_id
+      //var payment_id = response.razorpay_payment_id;
+      window.location.href = `http://localhost:8000/payment_done/?order_id=${order_id}&payment_id=${response.razorpay_payment_id}&user_id=${user_id}`;
+    },
+    "prefill": {
+      // We recommend pre-filling customer's contact information
+      "name": "{{ request.user.first_name }}", // Replace with actual user's first name
+      "email": "{{ request.user.email }}", // Replace with actual user's email
+      //"contact": "{{ request.user.profile.phone }}" // Replace with actual user's phone number
+    },
+    "theme": {
+      "color": "#3399cc"
+    }
+  };
+
+  var rzp1 = new Razorpay(options);
+
+  rzp1.on('payment.failed', function (response) {
+    // Handle payment failure here
+    alert(response.error.description);
+  });
+
+  document.getElementById('rzp-button1').onclick = function (e) {
+    console.log("Button clicked");
+    var selectedAddress = document.querySelector('input[name="selected_address"]:checked');
+    if (!selectedAddress) {
+      alert("Please select a delivery address before placing the order.");
+      return; // Prevent Razorpay from opening if address not selected
+    }
+    rzp1.open();
+    e.preventDefault();
+  };
+</script>
+
+{% endblock payment-gateway %}
+
+{% block scripts %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock scripts %}

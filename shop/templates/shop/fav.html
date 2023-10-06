@@ -1,0 +1,86 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Favourites | SkyKart
+{% endblock title %}
+{% block content %}
+  <section class="bg-dark py-4 my-5" style="min-height:600px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h4 class="mb-3">Favourite Items</h4>
+          <hr style="border-color:#b8bfc2;">
+        </div>
+        {% if fav %}
+          <table class="text-center">
+              <tr class="text-warning">
+                  <th></th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Add to Cart</th>
+                  <th></th>
+              </tr>
+
+              {% for item in fav %}
+                <tr class="text-white">
+                  <td>
+                    <a href="{% url 'product_detail' item.product.category.name item.product.name %}">
+                      <img src="{{item.product.product_image.url}}" height="100px" width="150px" alt="{{item.product.name}}">
+                    </a>
+                  </td>
+                  <td>{{item.product.name}}</td>
+                  <td>{{item.product.selling_price | stringformat:'d'}}</td>
+                  <td>
+                    {% if item.product.quantity > 0 %}
+                      <input type="hidden" value="{{ item.product.id }}" class="pid">
+                      <button class="cartbtn btn-primary" id="btnCart"><i class="fa fa-shopping-cart text-warning"></i> Add to Cart</button>
+                    {% else %}
+                      <button class="cartbtn btn-secondary"><i class="fa fa-minus"></i> Out of Stock</button>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="{% url 'remove_fav' item.id %}" onclick="return confirm('Are you sure? to Remove')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Remove</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              <tr>
+          </table>
+        <!-- Display a button to add favorites when the list is empty -->
+        {% else %}
+          <div class="empty-page">
+            <p class="text-warning"><b>You have no favorite items yet !</b></p>
+            <a href="{% url 'collections' %}" class="btn btn-primary">Add Favorites</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <script>
+    const cartButtons = document.querySelectorAll('.cartbtn');
+    cartButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const row = button.closest('tr');
+        const pid = row.querySelector('.pid').value;
+
+        const postObj = { 
+          'product_qty': 1, 
+          'pid': pid
+        };
+
+        fetch("/addtocart",{
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify(postObj)
+        }).then(response => {
+          return response.json();
+        }).then(data => {
+          alert(data['status']);
+        });
+      });
+    });
+  </script>
+{% endblock content %}

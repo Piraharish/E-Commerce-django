@@ -1,0 +1,43 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+SkyKart | Online Shopping
+{% endblock title %}
+
+{% block content %}
+<hr>
+<section class="bg-dark py-4 my-5" style="min-height:600px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3 text-heading text-uppercase text-warning text-center">{{category_name}}</h4>
+        <hr style="border-color:#b8bfc2;">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">{{category_name}} Collections</li>
+          </ol>
+        </nav>
+        {% include 'shop/inc/message.html' %}
+      </div>
+      {% for item in products %}
+      <div class="col-md-4 col-lg-3">
+        <div class="card my-3 bg-secondary">
+          <a href="{% url 'product_details' category_name item.name %}">
+          <img src="{{item.product_image.url}}"  class="card-img" alt="Categories">
+          
+          <div class="card-body">
+            <h5 class="card-title  text-font text-warning text-uppercase text-center">{{ item.name }}</h5>
+            <p class="card-text text-font">
+              <span class="float-start old_price"><s>Rs.{{ item.original_price | stringformat:'d'}}</s></span>
+              <span class="float-end new_price">Rs.{{ item.selling_price | stringformat:'d' }}</span>
+            </p>
+          </div>
+        </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+ 
+{% endblock content %}

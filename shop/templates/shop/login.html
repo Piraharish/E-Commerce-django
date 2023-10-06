@@ -1,0 +1,49 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Login | SkyKart
+{% endblock title %}
+{% block content %}
+  <div class="bg-secondary" style="margin-top:70px;min-height:600px;">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3 text-heading text-warning text-center bg-dark"> User Login</h4>
+        <hr style="border-color:#b8bfc2;">
+        {% include 'shop/inc/message.html' %}
+      </div>
+    </div>
+    <section class="py-4" >
+      <div class="container">
+        <div class="row d-flex justify-content-center">
+          <div class="col-6">
+            <form method="post" action="">
+              {% csrf_token %}
+            <div class="card bg-dark">
+              <div class="card-body">
+                <div class="mb-4">
+                  <label for="" class="form-label text-font text-warning"><i class="fa fa-user" aria-hidden="true"></i> User Name</label>
+                  <input type="text" name="username" id="username" class="form-control" placeholder="Enter User Name">
+                </div>
+                <div class="mb-4">
+                  <label for="" class="form-label text-font text-warning"><i class="fa fa-key" aria-hidden="true"></i> Password</label>
+                  <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password">
+                </div>
+                <div class="d-flex justify-content-center">
+                <small class="text-center"><a href="{% url 'password_reset' %}">Forgot Password ?</a></small>
+                </div>
+                <br>
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="placeorderbtn btn-primary text-font"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
+                </div>
+                <div class="text-center text-primary fw-bold">
+                  <small>New User? <a href="{% url 'register'%}" class="text-danger">Create an Account</a></small>
+                </div>
+              </div>
+            </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock content %}

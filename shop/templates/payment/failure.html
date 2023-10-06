@@ -1,0 +1,24 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Payment Failure | SkyKart
+{% endblock title %}
+{% block content %}
+<div class="container my-5 py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card bg-dark">
+        <div class="card-header bg-danger text-white">
+          <h5 class="mb-0 text-font text-uppercase text-center">Payment Failure</h5>
+        </div>
+        <div class="card-body text-light text-center">
+          <p>There was an issue processing your payment. Please try again later or contact customer support.</p>
+          <!-- Add more content as needed -->
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+          <a href="{% url 'cart' %}" class="btn btn-secondary text-font mt-3">Back to Cart</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

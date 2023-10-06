@@ -1,0 +1,46 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Saved Addresses | SkyKart
+{% endblock title %}
+{% block content %}
+<div class="container my-5 py-5">
+  <h1 class="mb-4 address-font text-uppercase">Saved Addresses</h1><hr class="hr text-warning">
+  {% if addresses %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for address in addresses %}
+        <div class="col">
+          <div class="card">
+            <div class="card-header bg-dark text-font text-warning">
+              Address {{ forloop.counter }}
+            </div>
+            <div class="card-body bg-secondary">
+              <h5 class="card-title text-font text-center text-uppercase">{{ address.first_name }} {{ address.last_name }}</h5>
+              <p class="card-text"><strong><i class="fa fa-phone"></i> Phone:</strong> {{ address.phone }}</p>
+              <p class="card-text"><strong><i class="fa fa-envelope"></i> Email:</strong> {{ address.email }}</p>
+              <p class="card-text"><strong><i class="fa fa-map-marker"></i> Address:</strong> {{ address.address }}</p>
+              <p class="card-text"><strong><i class="fa fa-location-arrow"></i> District:</strong> {{ address.district }}</p>
+              <p class="card-text"><strong><i class="fa fa-flag"></i> State:</strong> {{ address.state }}</p>
+              <p class="card-text"><strong><i class="fa fa-map-pin"></i> Zipcode:</strong> {{ address.zip }}</p>
+              <p class="card-text"><strong><i class="fa fa-building"></i> Address Type:</strong> {{ address.get_address_type_display }}</p>
+              <!-- Add more fields here -->
+            </div>
+            <div class="card-footer bg-dark">
+              <div class="d-flex justify-content-between">
+                <p class="mb-0"></p>
+                <a href="{% url 'edit_address' address.id %}" class="editbtn btn-secondary text-warning"><i class="fa fa-edit"></i>Edit</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+  <div class="card-body bg-dark">
+    <p class="text-font text-danger text-center">You have no saved Address yet!</p>
+  </div>
+  <div class="card-footer bg-dark d-flex justify-content-center">
+    <a href="{% url 'save_address' %}" class="btn btn-success text-font text-dark  mt-3">Add Now</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}

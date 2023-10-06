@@ -1,0 +1,35 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+SkyKart | Online Shopping
+{% endblock title %}
+
+{% block content %}
+{% include 'shop/inc/slider.html' %}
+<section>
+  <div class="bg-dark" style="margin-top:60px;">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="mb-3 text-heading text-uppercase text-warning text-center"> Trending Offfers</h1>
+        <hr style="border-color:#b8bfc2;">
+      </div>
+      {% for item in products %}
+      <div class="col-md-4 col-lg-3 bg-secondary">
+        <div class="card my-3 bg-dark">
+          <a href="{% url 'product_details' item.category.name item.name %}">
+          <img src="{{item.product_image.url}}"  class="card-img" alt="Categories">
+          <!--<a href="{% url 'product_details' item.category.name item.name %}">-->
+          <div class="card-body">
+            <h5 class="card-title text-primary text-font text-center">{{ item.name }}</h5>
+            <p class="card-text">
+              <span class="float-start old_price text-font"><s>Rs.{{ item.original_price | stringformat:'d'}}</s></span>
+              <span class="float-end new_price text-font">Rs.{{ item.selling_price | stringformat:'d' }}</span>
+            </p>
+          </div>
+        </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock content %}

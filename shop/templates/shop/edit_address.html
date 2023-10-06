@@ -1,0 +1,110 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Edit Address | SkyKart
+{% endblock title %}
+{% block content %}
+<div class="container my-5 py-5">
+  <!--Section: Design Block-->
+  <section>
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0 text-font text-uppercase text-center">Edit Address</h5>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="row mb-4">
+                <div class="col">
+                  <div class="form-outline">
+                    <label class="form-label" for="firstname">First name</label><br>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                      <p class="text-danger">{{ form.first_name.errors }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-outline">
+                    <label class="form-label" for="lastname">Last name</label><br>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                      <p class="text-danger">{{ form.last_name.errors }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-outline mb-4">
+                <label class="form-label" for="phone">Phone</label><br>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                  <p class="text-danger">{{ form.phone.errors }}</p>
+                {% endif %}
+              </div>
+              
+              <div class="form-outline mb-4">
+                <label class="form-label" for="email">Email</label><br>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <p class="text-danger">{{ form.email.errors }}</p>
+                {% endif %}
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="address">Address</label><br>
+                {{ form.address }}
+                {% if form.address.errors %}
+                    <p class="text-danger">{{ form.address.errors }}</p>
+                {% endif %}
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label" for="state">State</label><br>
+                  {{ form.state }}
+                  {% if form.state.errors %}
+                    <p class="text-danger">{{ form.state.errors }}</p>
+                  {% endif %}
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label" for="district">District</label><br>
+                  {{ form.district }}
+                  {% if form.district.errors %}
+                    <p class="text-danger">{{ form.district.errors }}</p>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <!-- Repeat the above pattern for other form fields -->
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label" for="zip">Zip</label><br>
+                  {{ form.zip }}
+                  {% if form.zip.errors %}
+                    <p class="text-danger">{{ form.zip.errors }}</p>
+                  {% endif %}
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label class="form-label">Address Type</label>
+                  {{ form.address_type }}
+                  {% if form.address_type.errors %}
+                    <p class="text-danger">{{ form.address_type.errors }}</p>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="text-center">
+                <button type="submit" class="btn button-order col-md-10">Update Address</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: Design Block-->
+</div>
+{% endblock content %}

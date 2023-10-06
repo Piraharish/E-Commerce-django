@@ -1,0 +1,149 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+  Address | SkyKart
+{% endblock title %}
+{% block content %}
+<div class="container my-5 py-5">
+  <!--Section: Design Block-->
+  <section>
+    <div class="row">
+      
+      <div class="col-md-8 mb-4">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0 text-font text-uppercase text-center">Delivery address</h5>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'save_address' %}">
+              {% csrf_token %}
+              <div class="row mb-4">
+                <div class="col">
+                  <div class="form-outline">
+                      <label class="form-label" for="firstname">First name</label>
+                      <input type="text" id="firstname" name="first_name" class="form-control" />
+                      {% if form.errors.first_name %}
+                        <p class="text-danger">{{ form.errors.first_name }}</p>
+                      {% endif %}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-outline">
+                      <label class="form-label" for="lastname">Last name</label>
+                      <input type="text" id="lastname" name="last_name" class="form-control" />
+                      {% if form.errors.last_name %}
+                        <p class="text-danger">{{ form.errors.last_name }}</p>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Number input -->
+              <div class="form-outline mb-4">
+                  <label class="form-label" for="phone">Phone</label>
+                  <input type="number" id="phone" name="phone" class="form-control" />
+                  {% if form.errors.phone %}
+                    <p class="text-danger">{{ form.errors.phone }}</p>
+                  {% endif %}
+              </div>
+
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                  <label class="form-label" for="email">Email</label>
+                  <input type="email" id="email" name="email" class="form-control"/>
+                  {% if form.errors.email %}
+                    <p class="text-danger">{{ form.errors.email }}</p>
+                  {% endif %}
+              </div>
+
+              <!-- Address input -->
+              <div class="form-outline mb-4">
+                  <label class="form-label" for="address">Address</label>
+                  <input type="text" id="address" name="address" class="form-control" placeholder="Door no, Street, City"/>
+                  {% if form.errors.address %}
+                    <p class="text-danger">{{ form.errors.address }}</p>
+                  {% endif %}
+              </div>
+
+              <!-- State and District inputs -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label class="form-label" for="state">State</label>
+                    <input type="text" id="state" name="state" class="form-control form-control-lg" placeholder="Enter State">
+                    {% if form.errors.state %}
+                      <p class="text-danger">{{ form.errors.state }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label class="form-label" for="city">District</label>
+                    <input type="text" id="city" name="district" class="form-control form-control-lg" placeholder="Enter District">
+                    {% if form.errors.district %}
+                      <p class="text-danger">{{ form.errors.district }}</p>
+                    {% endif %}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label class="form-label" for="zipcode">Zip</label>
+                    <input type="text" id="zipcode" name="zip" class="form-control form-control-lg" placeholder="Zipcode"/>
+                    {% if form.errors.zip %}
+                      <p class="text-danger">{{ form.errors.zip }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-4 text-center">
+                    <label class="form-label">Address Type</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="address_type" id="homeAddress" value="home">
+                        <label class="form-check-label" for="homeAddress">Home</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="address_type" id="workAddress" value="work">
+                        <label class="form-check-label" for="workAddress">Work</label>
+                    </div>
+                    {% if form.errors.addressType %}
+                      <p class="text-danger">{{ form.errors.addressType }}</p>
+                    {% endif %}
+                </div>
+              </div>
+
+              <!-- Checkbox
+              <div class="form-check d-flex justify-content-center mb-2">
+                <input class="form-check-input me-2" type="checkbox" name="save_address" id="form11Example8" checked />
+                <label class="form-check-label" for="form11Example8">
+                  Save My Address
+                </label>
+                {% if form.errors.save_address %}
+                  <p class="text-danger">{{ form.errors.save_address }}</p>
+                {% endif %}
+              </div>  -->
+              <div class="text-center">
+                <button type="submit" class="placeorderbtn bg-secondary text-font text-white col-md-10">Save Address</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 position-static">
+        <div class="address-page">
+          <a href="{% url 'saved_addresses' %}" class="addressbtn btn-secondary">Show Addresses</a>
+       </div>
+       <br><br>
+       <!--{% if form.errors %}
+       {% for error in form.errors %}
+         <p class="alert alert-danger my-3">{{error}}</p>
+       {% endfor %}
+     {% endif %}-->
+
+     {% if messages %}
+       {% for msg in messages %}
+           <div class="alert alert-{{msg.tags}}" role="alert">
+               {{msg}}
+           </div>
+       {% endfor %}
+   {% endif %}           
+      </div>
+    </div>
+  </section>
+  <!--Section: Design Block-->
+</div>
+{% endblock content %}
